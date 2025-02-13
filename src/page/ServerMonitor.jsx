@@ -3,9 +3,8 @@ import { Line, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement, LineElement, PointElement } from 'chart.js';
 import io from 'socket.io-client';
 import LongTerm from './LongTerm';
+import { useLocation } from 'react-router-dom';
 
-// let ip = "http://192.168.0.138:5000";
-let ip = 'http://localhost:5000'
 
 ChartJS.register(
   Title,
@@ -23,6 +22,30 @@ const ServerMonitor = () => {
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
 
+const location = useLocation();
+
+const ip = location.state;
+
+const fetchsaveMetrics = async () => {
+  try {
+    const response = await fetch(`${ip}/allMetrics`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ip: ip
+      })
+    });
+
+    const data = await response.json();
+  } catch (error) {
+    console.error("Error fetching metrics:", error);
+ 
+  }
+};
+
+
   useEffect(() => {
     const socket = io(`${ip}`);
 
@@ -31,39 +54,42 @@ const ServerMonitor = () => {
       setLoading(false);
 
       // Send data to the backend to save in MongoDB
-        if(data ){
-          try {
-            const response = await fetch(`${ip}/save-metrics`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                system_info: data?.system_info,
-                MEMORY_INFO: data?.MEMORY_INFO
-              })
-            });
-    
-            if (!response.ok) {
-              throw new Error('Failed to save metrics');
+        setTimeout(async()=>{
+          if(data ){
+            try {
+              const response = await fetch(`${ip}/save-metrics`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  system_info: data?.system_info,
+                  MEMORY_INFO: data?.MEMORY_INFO,
+                  ip: ip
+                })
+              });
+      
+              if (!response.ok) {
+                throw new Error('Failed to save metrics');
+              }
+      
+              const result = await response.json();
+              fetchsaveMetrics();
+            } catch (error) {
+              console.error('Error saving metrics to backend:', error);
             }
-    
-             console.log("esonse",response);
-            const result = await response.json();
-            console.log('Metrics saved:', result);
-          } catch (error) {
-            console.error('Error saving metrics to backend:', error);
           }
-        }
+        },[40000])
     });
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [ip]);
 
   const fetchDetails = async () => {
     try {
+       setLoading(true);
       const resp = await fetch(`${ip}/metric`);
       if (!resp.ok) {
         throw new Error("Failed to fetch metrics");
@@ -74,15 +100,19 @@ const ServerMonitor = () => {
     } catch (error) {
       console.error("Error fetching metrics:", error);
       setLoading(false);
+      setMetrics("");
     }
   };
 
   useEffect(() => {
     fetchDetails();
-  }, []);
+  }, [ip]);
+
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className='loadinUi'>
+      <span class="loader"></span>
+    </div>
   }
 
   const memoryData = {
@@ -98,12 +128,18 @@ const ServerMonitor = () => {
 
  
   return (
+    
+    <div className="wrapper">
+
     <div className="flexwrap">
        {
         metrics ? 
         <>
          <div className="server-monitor-container">
+
       <h1 className="page-title">Server Metrics</h1>
+
+
       <div className="metrics-container">
         <div className="system-info">
           <h3>System Info</h3>
@@ -128,19 +164,22 @@ const ServerMonitor = () => {
              }
         </div>
         
-
       </div>
 
+      <div className="">
+        {/* <UptimeChart /> */}
+        <LongTerm ip={ip} />
+      </div>
 
-      
     </div>
 
 
-<LongTerm />
         </>
         :
-        <span>System Down</span>
+        <span className='loadinUi'>System Down</span>
        }
+    </div>
+
     </div>
 
   );

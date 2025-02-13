@@ -9,7 +9,8 @@ function App() {
     <div>
       <Routes>
 
-      <Route path='/' element={<ServerMonitor />}  />
+      <Route path='/serverDetail' element={<ServerMonitor />}  />
+      <Route path='/' element={<HomePage />}  />
 
       </Routes>
     </div>
