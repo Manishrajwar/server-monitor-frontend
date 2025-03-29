@@ -72,12 +72,11 @@
     align-items: center;
   }
   .chart-container2 {
+    max-width: 700px;
     padding: 20px;
-    /* max-width: 800px; */
     width: 100%;
     border-radius: 8px;
     display: flex;
-    /* height: 500px; */
     flex-direction: column;
     align-items: center;
   }
@@ -143,3 +142,63 @@
         transform: rotate(360deg);
     }
     } 
+
+    .make_flex{
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .long-term h1{
+      font-weight: 500;
+      font-size: 32px;
+      text-align: center;
+      margin: 30px 0px;
+    }
+
+    .up_status{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .up_status span{
+       color: green;
+    }
+
+    .up_Arrow{
+          color: green;
+    }
+
+    .down_arrow{
+      transform: rotate(180deg);
+      color: red;
+    }
+
+    .red-white-btn {
+      background: linear-gradient(135deg, #ff4b2b, #ff416c);
+      color: white;
+      border: 2px solid #ff4b2b;
+      padding: 2px 10px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 8px rgba(255, 75, 43, 0.3);
+      text-transform: uppercase;
+      width: 100px;
+      height: 40px;
+    }
+    
+    .red-white-btn:hover {
+      background: white;
+      color: #ff4b2b;
+      border: 2px solid #ff4b2b;
+      box-shadow: 0 4px 12px rgba(255, 75, 43, 0.5);
+    }
+    
+    .red-white-btn:active {
+      box-shadow: 0 2px 6px rgba(255, 75, 43, 0.4);
+    }
+    
