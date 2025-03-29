@@ -6,11 +6,7 @@ import ToggleButton from './ToggleButton';
 import { IoAlertCircleOutline, IoCaretUpOutline } from "react-icons/io5";
 import toast from 'react-hot-toast';
 
-
-
 const baseurl = "http://localhost:5500";
-
-
 
 function HomePage() {
 

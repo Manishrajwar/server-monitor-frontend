@@ -65,6 +65,8 @@ const getDeviceHistory = async () => {
     </div>
   }
 
+  console.log("ip" ,ip);
+
  
   return (
     
@@ -97,13 +99,31 @@ const getDeviceHistory = async () => {
           }
         </div>
 
+        {
+          ip.device_type !== "server" &&
+        
+        <div className="system-info">
+          <h3>Port Information</h3>
+          {
+            metrics &&
+
+          <>
+          <p><strong>port_1_name:</strong> {ip?.port_1_name}</p>
+          <p><strong>port_1_status:</strong> {ip?.port_1_status}</p>
+      
+          </>
+          }
+        </div>
+
+}
+
      
         
       </div>
 
 
       <div className="graphs">
-        <LongTerm metrics={metrics}  />
+        <LongTerm metrics={metrics} ip={ip}  />
       </div>
     
     </div>
