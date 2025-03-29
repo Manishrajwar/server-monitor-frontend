@@ -7,9 +7,8 @@ import { IoAlertCircleOutline, IoCaretUpOutline } from "react-icons/io5";
 import toast from 'react-hot-toast';
 
 
-const ips =["http://localhost:5000"];
 
-const baseurl = "http://localhost:5000";
+const baseurl = "http://localhost:5500";
 
 
 

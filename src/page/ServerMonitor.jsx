@@ -16,7 +16,7 @@ ChartJS.register(
   PointElement
 );
 
-const baseurl = "http://localhost:5000"
+const baseurl = "http://localhost:5500"
 
 const ServerMonitor = () => {
   const [metrics, setMetrics] = useState(null);
